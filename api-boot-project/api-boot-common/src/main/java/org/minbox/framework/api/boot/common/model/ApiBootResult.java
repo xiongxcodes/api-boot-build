@@ -1,5 +1,9 @@
 package org.minbox.framework.api.boot.common.model;
 
+import java.io.Serializable;
+
+import org.minbox.framework.api.boot.common.exception.ApiBootException;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,11 +20,15 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class ApiBootResult {
+public class ApiBootResult<T> implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2747033373367830183L;
     /**
      * 返回数据内容
      */
-    private Object data;
+    private T data;
     /**
      * 遇到业务异常或者系统异常时的错误码
      */
@@ -29,4 +37,53 @@ public class ApiBootResult {
      * 遇到业务异常或者系统异常时的错误消息提示内容
      */
     private String errorMessage;
+    
+    private boolean success;
+    
+    public static ApiBootResult<Void> ok() {
+        return new ApiBootResult<Void>(null, "0", "ok",true);
+    }
+    public static ApiBootResult<Void> ok(String errorMessage) {
+        return new ApiBootResult<Void>(null, "0", errorMessage,true);
+    }
+    public static <T> ApiBootResult<T> ok(T data) {
+        return new ApiBootResult<T>(data, "0", "ok",true);
+    }
+    public static <T> ApiBootResult<T> ok(T data,String errorMessage) {
+        return new ApiBootResult<T>(data, "0", errorMessage,true);
+    }
+    public static ApiBootResult<Void> fail(String errorMessage) {
+        return new ApiBootResult<Void>(null, "-1", errorMessage,false);
+    }
+    public static ApiBootResult<Void> fail(String errorCode,String errorMessage) {
+        return new ApiBootResult<Void>(null, errorMessage, errorMessage,false);
+    }
+    public static <T> ApiBootResult<T> fail(T data,String errorCode,String errorMessage) {
+        return new ApiBootResult<T>(data, errorMessage, errorMessage,false);
+    }
+    public static ApiBootResult<Throwable> fail(String errorMessage,ApiBootException cause) {
+        return new ApiBootResult<Throwable>(cause.getCause(), cause.getErrorCode(), errorMessage,false);
+    }
+    public static ApiBootResult<Throwable> fail(ApiBootException cause) {
+        return fail(cause.getMessage(),cause);
+    }
+    public static ApiBootResult<Throwable> fail(String errorCode,String errorMessage,Throwable cause) {
+        if(cause instanceof ApiBootException) {
+            return  fail(errorMessage,(ApiBootException)cause);
+        }
+        return new ApiBootResult<Throwable>(cause, errorCode, errorMessage,false);
+    }
+    public static ApiBootResult<Throwable> fail(String errorCode,Throwable cause) {
+        if(cause instanceof ApiBootException) {
+            return  fail((ApiBootException)cause);
+        }
+        return fail(errorCode,cause.getMessage(),cause);
+    }
+    public static ApiBootResult<Throwable> fail(Throwable cause) {
+        if(cause instanceof ApiBootException) {
+            return  fail((ApiBootException)cause);
+        }
+        return fail("-1",cause.getMessage(),cause);
+    }
+    
 }

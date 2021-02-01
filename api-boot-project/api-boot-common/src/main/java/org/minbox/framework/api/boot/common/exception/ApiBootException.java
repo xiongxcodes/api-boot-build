@@ -1,5 +1,6 @@
 package org.minbox.framework.api.boot.common.exception;
 
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
@@ -13,8 +14,14 @@ import lombok.NoArgsConstructor;
  * Gitee：https://gitee.com/hengboy
  * GitHub：https://github.com/hengboy
  */
+@Data
 @NoArgsConstructor
 public class ApiBootException extends RuntimeException {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 6855294435745195541L;
+    private String errorCode = "-1";
     /**
      * 构造函数初始化异常对象
      *
@@ -23,7 +30,15 @@ public class ApiBootException extends RuntimeException {
     public ApiBootException(String message) {
         super(message);
     }
-
+    /**
+     * 构造函数初始化异常对象
+     * @param errorCode 错误码
+     * @param message  异常信息
+     */
+    public ApiBootException(String errorCode,String message) {
+        super(message);
+        this.errorCode = errorCode;
+    }
     /**
      * 构造函数初始化异常对象
      *
@@ -32,5 +47,12 @@ public class ApiBootException extends RuntimeException {
      */
     public ApiBootException(String message, Throwable cause) {
         super(message, cause);
+    }
+    public ApiBootException(Throwable cause) {
+        super(cause);
+    }
+    public ApiBootException(String errorCode,String message, Throwable cause) {
+        super(message, cause);
+        this.errorCode = errorCode;
     }
 }
