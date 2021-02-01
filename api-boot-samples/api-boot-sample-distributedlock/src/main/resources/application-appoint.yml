@@ -1,0 +1,8 @@
+api:
+  boot:
+    logging:
+      admin:
+        server-address: user:123456@localhost:9090
+      format-console-log-json: true
+      #number-of-request-log: 2
+      #report-interval-second: 10
