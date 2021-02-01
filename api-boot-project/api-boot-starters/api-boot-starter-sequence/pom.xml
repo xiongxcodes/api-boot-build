@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>api-boot-starters</artifactId>
+        <groupId>com.github.xiongxcodes</groupId>
+        <version>${revision}</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>jar</packaging>
+    <artifactId>api-boot-starter-sequence</artifactId>
+    <properties>
+        <main.basedir>${basedir}/../../..</main.basedir>
+    </properties>
+    <description>
+        分布式高效ID算法集成，基于Twitter的Snowflake（"雪花算法"）算法实现分布式高效有序ID生产黑科技
+
+        Distributed efficient ID algorithm integration,
+        based on Twitter's Snowflake algorithm to achieve distributed efficient and orderly ID production black
+        technology.
+
+        See more details：https://gitee.com/yu120/sequence
+    </description>
+    <scm>
+		<connection>scm:git:https://github.com/xiongxcodes/api-boot-build.git</connection>
+		<developerConnection>scm:git:https://github.com/xiongxcodes/api-boot-build.git</developerConnection>
+		<url>https://github.com/xiongxcodes/api-boot-build</url>
+		<tag>HEAD</tag>
+	</scm>
+	<developers>
+		<developer>
+			<id>xiongx</id>
+			<name>xiongx</name>
+			<email>348953327@qq.com</email>
+			<url>https://gitee.com/xiongxcodes</url>
+			<organization>xiongxcodes</organization>
+			<organizationUrl>https://github.com/xiongxcodes</organizationUrl>
+		</developer>
+	</developers>
+    <dependencies>
+        <!--ApiBoot Starter-->
+        <dependency>
+            <groupId>com.github.xiongxcodes</groupId>
+            <artifactId>api-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.minbox.framework</groupId>
+            <artifactId>minbox-sequence</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
