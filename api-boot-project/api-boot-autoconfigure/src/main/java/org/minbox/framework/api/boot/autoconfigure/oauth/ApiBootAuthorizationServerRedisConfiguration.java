@@ -17,6 +17,12 @@
 
 package org.minbox.framework.api.boot.autoconfigure.oauth;
 
+import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProperties.API_BOOT_OAUTH_PREFIX;
+
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.minbox.framework.oauth.AuthorizationServerConfiguration;
 import org.minbox.framework.oauth.grant.OAuth2TokenGranter;
 import org.slf4j.Logger;
@@ -29,50 +35,44 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
-
-import java.util.List;
-
-import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProperties.API_BOOT_OAUTH_PREFIX;
 
 /**
  * Redis authorization server
  *
  * @author 恒宇少年
  */
-@Configuration
 @EnableConfigurationProperties(ApiBootOauthProperties.class)
-@EnableAuthorizationServer
-@ConditionalOnBean(RedisConnectionFactory.class)
+@ConditionalOnBean({RedisConnectionFactory.class,DataSource.class})
 @ConditionalOnClass({AuthorizationServerConfiguration.class})
 @ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "away", havingValue = "redis")
 @AutoConfigureAfter(RedisAutoConfiguration.class)
-public class ApiBootAuthorizationServerRedisAutoConfiguration extends ApiBootAuthorizationServerAutoConfiguration {
+public class ApiBootAuthorizationServerRedisConfiguration extends ApiBootAuthorizationServerConfiguration {
     /**
      * logger instance
      */
-    static Logger logger = LoggerFactory.getLogger(ApiBootAuthorizationServerRedisAutoConfiguration.class);
+    static Logger logger = LoggerFactory.getLogger(ApiBootAuthorizationServerRedisConfiguration.class);
     /**
      * redis connection factory
      */
     private RedisConnectionFactory redisConnectionFactory;
-
+    private DataSource dataSource;
     /**
      * constructor instance redis connection factory
      *
      * @param objectProvider         ApiBoot Token Granter
      * @param apiBootOauthProperties ApiBoot Oauth Properties
      * @param redisConnectionFactory Redis Connection Factory
+     * @param dataSource             data Source
      */
-    public ApiBootAuthorizationServerRedisAutoConfiguration(ObjectProvider<List<OAuth2TokenGranter>> objectProvider, ApiBootOauthProperties apiBootOauthProperties, RedisConnectionFactory redisConnectionFactory) {
+    public ApiBootAuthorizationServerRedisConfiguration(ObjectProvider<List<OAuth2TokenGranter>> objectProvider, ApiBootOauthProperties apiBootOauthProperties, RedisConnectionFactory redisConnectionFactory, DataSource dataSource) {
         super(objectProvider, apiBootOauthProperties);
         this.redisConnectionFactory = redisConnectionFactory;
+        this.dataSource = dataSource;
         logger.info("ApiBoot Oauth2 initialize using redis.");
     }
 
@@ -82,8 +82,10 @@ public class ApiBootAuthorizationServerRedisAutoConfiguration extends ApiBootAut
      * @param clients client details service configuration
      * @throws Exception exception
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        /**
         InMemoryClientDetailsServiceBuilder inMemoryClientDetailsServiceBuilder = clients.inMemory();
         apiBootOauthProperties.getClients().stream().forEach(client -> inMemoryClientDetailsServiceBuilder.withClient(client.getClientId())
             .secret(passwordEncoder().encode(client.getClientSecret()))
@@ -91,7 +93,8 @@ public class ApiBootAuthorizationServerRedisAutoConfiguration extends ApiBootAut
             .scopes(client.getScopes())
             .resourceIds(client.getResourceId())
             .accessTokenValiditySeconds(client.getAccessTokenValiditySeconds())
-            .refreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds()));
+            .refreshTokenValiditySeconds(client.getRefreshTokenValiditySeconds()));**/
+        clients.jdbc(dataSource);
     }
 
     /**
@@ -100,6 +103,7 @@ public class ApiBootAuthorizationServerRedisAutoConfiguration extends ApiBootAut
      * @return {@link RedisTokenStore} instance
      */
     @Bean
+    @Primary
     public TokenStore redisTokenStore() {
         return new RedisTokenStore(redisConnectionFactory);
     }

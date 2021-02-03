@@ -16,15 +16,15 @@
 
 package org.minbox.framework.api.boot.autoconfigure.oauth;
 
-import lombok.Data;
-import org.minbox.framework.api.boot.autoconfigure.security.SecurityAway;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProperties.API_BOOT_OAUTH_PREFIX;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProperties.API_BOOT_OAUTH_PREFIX;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+import lombok.Data;
 
 /**
  * Configure Oauth2 properties class
@@ -39,6 +39,14 @@ public class ApiBootOauthProperties {
      * config prefix
      */
     public static final String API_BOOT_OAUTH_PREFIX = "api.boot.oauth";
+    /**
+     * enableAuthorizationServer 
+     */
+    private boolean enableAuthorizationServer = false;
+    /**
+     * enableResourceServer
+     */
+    private boolean enableResourceServer = false;
     /**
      * Configure oauth authentication information storage mode
      * <p>
@@ -88,6 +96,7 @@ public class ApiBootOauthProperties {
      * <p>
      * Add a client information by default and use the default configuration
      */
+    @SuppressWarnings("unchecked")
     private List<OAuthClient> clients = new ArrayList() {
         {
             add(new OAuthClient());

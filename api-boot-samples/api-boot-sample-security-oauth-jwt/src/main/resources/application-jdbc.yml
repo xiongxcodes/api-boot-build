@@ -7,3 +7,4 @@ api:
       away: jdbc
       jwt:
         enable: true
+        sign-key: 123456

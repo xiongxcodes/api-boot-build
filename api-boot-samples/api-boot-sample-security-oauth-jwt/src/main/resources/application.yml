@@ -1,14 +1,16 @@
 spring:
   application:
     name: api-boot-sample-security-oauth-jwt
+  main:
+    allow-bean-definition-overriding: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/test
+    url: jdbc:mysql://localhost:3306/db_oauth?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: 123456
   profiles:
-    active: memory
+    active: jdbc
 
 server:
     port: 9091

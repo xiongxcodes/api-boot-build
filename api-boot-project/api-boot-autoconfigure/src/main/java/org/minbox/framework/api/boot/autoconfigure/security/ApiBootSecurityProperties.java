@@ -16,15 +16,16 @@
 
 package org.minbox.framework.api.boot.autoconfigure.security;
 
-import lombok.Data;
-import org.minbox.framework.security.SecurityUser;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import static org.minbox.framework.api.boot.autoconfigure.security.ApiBootSecurityProperties.API_BOOT_SECURITY_PREFIX;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.minbox.framework.api.boot.autoconfigure.security.ApiBootSecurityProperties.API_BOOT_SECURITY_PREFIX;
+import org.minbox.framework.security.SecurityUser;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+import lombok.Data;
 
 /**
  * Integrate the properties of SpringSecurity
@@ -45,6 +46,7 @@ public class ApiBootSecurityProperties {
     public static final String[] DEFAULT_IGNORE_URLS = new String[]{
         "/v2/api-docs",
         "/swagger-ui.html",
+        "/doc.html",
         "/swagger-resources/configuration/security",
         "/META-INF/resources/webjars/**",
         "/webjars/**",

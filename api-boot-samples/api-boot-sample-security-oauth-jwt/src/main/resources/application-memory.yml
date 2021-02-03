@@ -6,9 +6,11 @@ api:
         - username: hengboy
           password: 123456
     oauth:
+      enable-authorization-server: true
       away: memory
       jwt:
         enable: true
+        sign-key: 123456
       # 配置多客户端
       clients:
         # 客户端test基本配置

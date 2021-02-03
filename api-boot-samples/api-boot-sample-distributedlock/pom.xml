@@ -22,6 +22,28 @@
             <groupId>com.github.xiongxcodes</groupId>
             <artifactId>api-boot-starter-distributedlock</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.xiongxcodes</groupId>
+            <artifactId>api-boot-starter-globalexception</artifactId>
+        </dependency>
+        
+        <!--ApiBoot Http Converter-->
+        <dependency>
+           <groupId>com.github.xiongxcodes</groupId>
+            <artifactId>api-boot-starter-http-converter</artifactId>
+        </dependency>
+        <!--ApiBoot Swagger-->
+        <dependency>
+            <groupId>com.github.xiongxcodes</groupId>
+            <artifactId>api-boot-starter-swagger</artifactId>
+        </dependency>
+
+        <!--ApiBoot Security Oauth-->
+        <dependency>
+           <groupId>com.github.xiongxcodes</groupId>
+            <artifactId>api-boot-starter-security-oauth-jwt</artifactId>
+        </dependency>
+        
     </dependencies>
     <dependencyManagement>
         <dependencies>

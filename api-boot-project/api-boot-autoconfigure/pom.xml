@@ -147,14 +147,14 @@
 			<artifactId>minbox-sequence</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.minbox.framework</groupId>
-			<artifactId>minbox-oauth</artifactId>
+        <dependency>
+			<groupId>com.github.xiongxcodes</groupId>
+			<artifactId>haohope-security</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>org.minbox.framework</groupId>
-			<artifactId>minbox-security</artifactId>
+			<groupId>com.github.xiongxcodes</groupId>
+			<artifactId>haohope-oauth</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -162,14 +162,15 @@
 			<artifactId>minbox-oss</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.minbox.framework</groupId>
-			<artifactId>message-pipe-client</artifactId>
+			<artifactId>message-pipe-server</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
 			<groupId>org.minbox.framework</groupId>
-			<artifactId>message-pipe-server</artifactId>
+			<artifactId>message-pipe-client</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

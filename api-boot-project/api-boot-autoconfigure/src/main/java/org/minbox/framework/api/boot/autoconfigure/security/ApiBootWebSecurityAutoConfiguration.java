@@ -1,31 +1,29 @@
 /*
  * Copyright [2019] [恒宇少年 - 于起宇]
  *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- *        http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
 
 package org.minbox.framework.api.boot.autoconfigure.security;
 
-import org.minbox.framework.security.WebSecurityConfiguration;
-import org.minbox.framework.security.handler.DefaultSecurityAccessDeniedHandler;
-import org.minbox.framework.security.point.DefaultSecurityAuthenticationEntryPoint;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.util.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.minbox.framework.security.WebSecurityConfiguration;
+import org.minbox.framework.security.handler.DefaultSecurityAccessDeniedHandler;
+import org.minbox.framework.security.point.DefaultSecurityAuthenticationEntryPoint;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.util.ObjectUtils;
 
 /**
  * ApiBoot integrates SpringSecurity's default automation configuration
@@ -37,10 +35,12 @@ import java.util.List;
 public class ApiBootWebSecurityAutoConfiguration extends WebSecurityConfiguration {
 
     protected ApiBootSecurityProperties apiBootSecurityProperties;
+    //private PasswordEncoder passwordEncoder;
     private AccessDeniedHandler accessDeniedHandler;
     private AuthenticationEntryPoint authenticationEntryPoint;
 
-    public ApiBootWebSecurityAutoConfiguration(ApiBootSecurityProperties apiBootSecurityProperties, AccessDeniedHandler accessDeniedHandler, AuthenticationEntryPoint authenticationEntryPoint) {
+    public ApiBootWebSecurityAutoConfiguration(ApiBootSecurityProperties apiBootSecurityProperties,
+        AccessDeniedHandler accessDeniedHandler, AuthenticationEntryPoint authenticationEntryPoint) {
         this.apiBootSecurityProperties = apiBootSecurityProperties;
         this.accessDeniedHandler = accessDeniedHandler;
         this.authenticationEntryPoint = authenticationEntryPoint;
@@ -53,6 +53,7 @@ public class ApiBootWebSecurityAutoConfiguration extends WebSecurityConfiguratio
      *
      * @return Path to be excluded
      */
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     protected List<String> configureIgnoreUrls() {
         List<String> ignoringUrls = new ArrayList(Arrays.asList(ApiBootSecurityProperties.DEFAULT_IGNORE_URLS));
@@ -61,15 +62,61 @@ public class ApiBootWebSecurityAutoConfiguration extends WebSecurityConfiguratio
         }
         return ignoringUrls;
     }
+    /**
+     * Disable basic http
+     *
+     * @param http {@link HttpSecurity}
+     * @throws Exception exception
+     */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+      /**
+        http
+      //表单登录,loginPage为登录请求的url,loginProcessingUrl为表单登录处理的URL
+      .formLogin().loginPage("/login").failureForwardUrl("/erroraa")
+      //允许访问
+      .and().authorizeRequests().antMatchers(
+      "/user/hello",
+      "/oauthLogin",
+      "/grant","/erroraa").permitAll().anyRequest().authenticated()
+      //禁用跨站伪造
+      .and().csrf();**/
+        
+        //http.authorizeRequests().anyRequest().authenticated();
+        // 自动登录
+        /*.and()
+            .rememberMe()
+            // 加密的秘钥
+            .key("unique-and-secret")
+            // 存放在浏览器端cookie的key
+            .rememberMeCookieName("remember-me-cookie-name")
+            // token失效的时间，单位为秒
+            .tokenValiditySeconds(60 * 60 * 25)*/
+        //.and()
+        // 暂时禁用CSRF，否则无法提交登录表单
+        //.csrf().disable();
+
+        //http.authorizeRequests().anyRequest().authenticated().and().httpBasic().and().csrf().disable();
+        //if (disableHttpBasic()) {
+         //   http.httpBasic().disable();
+        //}
+        //if (disableCsrf()) {
+        //    http.csrf().disable();
+        //}
+        
+        super.configure(http);
+    }
 
     @Override
     protected AccessDeniedHandler getAccessDeniedHandler() {
-        return ObjectUtils.isEmpty(this.accessDeniedHandler) ? new DefaultSecurityAccessDeniedHandler() : this.accessDeniedHandler;
+        return ObjectUtils.isEmpty(this.accessDeniedHandler) ? new DefaultSecurityAccessDeniedHandler()
+            : this.accessDeniedHandler;
     }
 
     @Override
     protected AuthenticationEntryPoint getAuthenticationEntryPoint() {
-        return ObjectUtils.isEmpty(this.authenticationEntryPoint) ? new DefaultSecurityAuthenticationEntryPoint() : this.authenticationEntryPoint;
+        return ObjectUtils.isEmpty(this.authenticationEntryPoint) ? new DefaultSecurityAuthenticationEntryPoint()
+            : this.authenticationEntryPoint;
     }
 
     @Override

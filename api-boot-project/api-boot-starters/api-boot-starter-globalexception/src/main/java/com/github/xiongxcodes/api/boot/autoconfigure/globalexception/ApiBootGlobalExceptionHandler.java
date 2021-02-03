@@ -27,27 +27,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice(annotations = {RestController.class, Controller.class})
 public class ApiBootGlobalExceptionHandler {
+    private Throwable createThrowable(Throwable e) {
+        return e.getCause()==null?e:e.getCause();
+    }
     /**
      * 方法参数校验
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ApiBootResult<Throwable> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
+    public ApiBootResult<Void> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
         HttpServletRequest request) {
         log.error(String.format("【%s】请求异常 code:-1 reason:%s IP:%s", request.getRequestURL().toString(), e.getMessage(),
             request.getRemoteHost()));
         List<ObjectError> errors = e.getBindingResult().getAllErrors();
         ObjectError error = errors.get(0);
-        return ApiBootResult.fail("-1",error.getDefaultMessage(), e);
+        return ApiBootResult.fail("-1",error.getDefaultMessage());
     }
     
     @ExceptionHandler(BindException.class)
-    public ApiBootResult<Throwable> handleBindException(BindException e,
+    public ApiBootResult<Void> handleBindException(BindException e,
         HttpServletRequest request) {
         log.error(String.format("【%s】请求异常 code:-1 reason:%s IP:%s", request.getRequestURL().toString(), e.getMessage(),
             request.getRemoteHost()));
         List<ObjectError> errors = e.getBindingResult().getAllErrors();//FieldError
         ObjectError error = errors.get(0);
-        return ApiBootResult.fail("-1",error.getDefaultMessage(), e);
+        return ApiBootResult.fail("-1",error.getDefaultMessage());
     }
     
     @ExceptionHandler(ConstraintViolationException.class)
@@ -57,7 +60,7 @@ public class ApiBootGlobalExceptionHandler {
             request.getRemoteHost()));
         return ApiBootResult.fail("-1", e.getConstraintViolations().stream()
             .map( cv -> cv == null ? "null" : cv.getPropertyPath() + ": " + cv.getMessage() )
-            .collect( Collectors.joining( ", " ) ),e);
+            .collect( Collectors.joining( ", " ) ),createThrowable(e));
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -67,7 +70,7 @@ public class ApiBootGlobalExceptionHandler {
         log.error(String.format("【%s】请求异常 code:%s reason:%s", request.getRequestURL().toString(),
             HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase()));
         // return RestRes.failed(-1, "http 400：" + e.getMessage());
-        return ApiBootResult.fail(HttpStatus.BAD_REQUEST.value() + "", e);
+        return ApiBootResult.fail(HttpStatus.BAD_REQUEST.value() + "", createThrowable(e));
     }
 
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
@@ -76,7 +79,7 @@ public class ApiBootGlobalExceptionHandler {
     handleHttpRequestMethodNotSupportedException(HttpMessageNotReadableException e, HttpServletRequest request) {
         log.error(String.format("【%s】请求异常 code:%s reason:%s", request.getRequestURL().toString(),
             HttpStatus.METHOD_NOT_ALLOWED.value(), HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase()));
-        return ApiBootResult.fail(HttpStatus.METHOD_NOT_ALLOWED.value() + "", e);
+        return ApiBootResult.fail(HttpStatus.METHOD_NOT_ALLOWED.value() + "", createThrowable(e));
     }
 
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
@@ -85,7 +88,7 @@ public class ApiBootGlobalExceptionHandler {
     handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e, HttpServletRequest request) {
         log.error(String.format("【%s】请求异常 code:%s reason:%s", request.getRequestURL().toString(),
             HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), HttpStatus.UNSUPPORTED_MEDIA_TYPE.getReasonPhrase()));
-        return ApiBootResult.fail(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value() + "", e);
+        return ApiBootResult.fail(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value() + "", createThrowable(e));
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -94,7 +97,7 @@ public class ApiBootGlobalExceptionHandler {
         HttpServletRequest request) {
         log.error(String.format("【%s】请求异常 code:%s reason:%s", request.getRequestURL().toString(),
             HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase()));
-        return ApiBootResult.fail(HttpStatus.UNAUTHORIZED.value() + "", e);
+        return ApiBootResult.fail(HttpStatus.UNAUTHORIZED.value() + "", createThrowable(e));
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -103,8 +106,8 @@ public class ApiBootGlobalExceptionHandler {
         log.error(String.format("【%s】请求异常 code:%s reason:%s", request.getRequestURL().toString(),
             HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()), e);
         if (e instanceof ApiBootException) {
-            return ApiBootResult.fail(e);
+            return ApiBootResult.fail(createThrowable(e));
         }
-        return ApiBootResult.fail(HttpStatus.INTERNAL_SERVER_ERROR.value() + "", e);
+        return ApiBootResult.fail(HttpStatus.INTERNAL_SERVER_ERROR.value() + "", createThrowable(e));
     }
 }

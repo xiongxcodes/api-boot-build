@@ -56,13 +56,13 @@ public class ApiBootResult<T> implements Serializable {
         return new ApiBootResult<Void>(null, "-1", errorMessage,false);
     }
     public static ApiBootResult<Void> fail(String errorCode,String errorMessage) {
-        return new ApiBootResult<Void>(null, errorMessage, errorMessage,false);
+        return new ApiBootResult<Void>(null, errorCode, errorMessage,false);
     }
     public static <T> ApiBootResult<T> fail(T data,String errorCode,String errorMessage) {
         return new ApiBootResult<T>(data, errorMessage, errorMessage,false);
     }
     public static ApiBootResult<Throwable> fail(String errorMessage,ApiBootException cause) {
-        return new ApiBootResult<Throwable>(cause.getCause(), cause.getErrorCode(), errorMessage,false);
+        return new ApiBootResult<Throwable>(cause, cause.getErrorCode(), errorMessage,false);
     }
     public static ApiBootResult<Throwable> fail(ApiBootException cause) {
         return fail(cause.getMessage(),cause);

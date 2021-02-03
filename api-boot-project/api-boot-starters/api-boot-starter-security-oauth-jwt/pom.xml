@@ -52,13 +52,13 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.minbox.framework</groupId>
-            <artifactId>minbox-oauth</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.minbox.framework</groupId>
-            <artifactId>minbox-security</artifactId>
-        </dependency>
+			<groupId>com.github.xiongxcodes</groupId>
+			<artifactId>haohope-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.xiongxcodes</groupId>
+			<artifactId>haohope-oauth</artifactId>
+		</dependency>
     </dependencies>
 
 </project>

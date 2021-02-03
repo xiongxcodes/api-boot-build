@@ -15,6 +15,7 @@ api:
       # 启用jwt
       jwt:
         enable: true
+        sign-key: 123456
       # 配置oauth2客户端列表
       clients:
         - client-id: admin

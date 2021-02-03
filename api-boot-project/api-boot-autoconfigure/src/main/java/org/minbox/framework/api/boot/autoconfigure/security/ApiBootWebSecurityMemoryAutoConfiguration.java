@@ -16,6 +16,10 @@
 
 package org.minbox.framework.api.boot.autoconfigure.security;
 
+import static org.minbox.framework.api.boot.autoconfigure.security.ApiBootSecurityProperties.API_BOOT_SECURITY_PREFIX;
+
+import java.util.List;
+
 import org.minbox.framework.security.SecurityUser;
 import org.minbox.framework.security.WebSecurityConfiguration;
 import org.slf4j.Logger;
@@ -34,11 +38,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.util.ObjectUtils;
-
-import java.util.List;
-
-import static org.minbox.framework.api.boot.autoconfigure.security.ApiBootSecurityProperties.API_BOOT_SECURITY_PREFIX;
 
 /**
  * Automatic configuration to authenticate users using memory

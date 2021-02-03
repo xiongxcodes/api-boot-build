@@ -17,11 +17,11 @@
 
 package com.test;
 
+import org.minbox.framework.api.boot.common.model.ApiBootResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.github.xiongxcodes.distributedlock.annotation.DistributedlockAnn;
 
 import lombok.Data;
 
@@ -35,13 +35,14 @@ import lombok.Data;
  * GitHub：https://github.com/hengboy
  */
 @RestController
-@RequestMapping("/car")
+@RequestMapping("/api/car")
 public class IndexController {
 
     @GetMapping(value = "/index")
-    @DistributedlockAnn()
-    public User index(User user) throws Exception {
-        return user;
+    @ResponseBody
+    public ApiBootResult<User> index(User user) throws Exception {
+        int i = 1/0;
+        return ApiBootResult.ok(user);
     }
 
     @Data

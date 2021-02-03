@@ -15,28 +15,38 @@
  *
  */
 
-package com.test;
+package org.minbox.framework.api.boot.sample;
 
-import org.minbox.framework.api.boot.autoconfigure.swagger.annotation.EnableApiBootSwagger;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.minbox.framework.api.boot.common.model.ApiBootResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.Data;
 
 /**
- * 日志示例
- *
  * @author：恒宇少年 - 于起宇
  * <p>
- * DateTime：2019-07-15 22:41
+ * DateTime：2019-07-15 22:48
  * Blog：http://blog.yuqiyu.com
  * WebSite：http://www.jianshu.com/u/092df3f77bca
  * Gitee：https://gitee.com/hengboy
  * GitHub：https://github.com/hengboy
  */
-@EnableApiBootSwagger
-@SpringBootApplication
-public class ApiBootDistributedlockApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(ApiBootDistributedlockApplication.class, args);
-        
+@RestController
+@RequestMapping("/api/car")
+public class IndexController {
+    @GetMapping(value = "/index")
+    @ResponseBody
+    public ApiBootResult<User> index(User user) throws Exception {
+        return ApiBootResult.ok(user);
+    }
+
+    @Data
+    public static class User {
+        private String name;
+        private String email;
+        private int age;
     }
 }

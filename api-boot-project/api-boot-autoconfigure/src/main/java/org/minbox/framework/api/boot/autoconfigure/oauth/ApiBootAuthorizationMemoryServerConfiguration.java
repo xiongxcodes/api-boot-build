@@ -16,6 +16,10 @@
 
 package org.minbox.framework.api.boot.autoconfigure.oauth;
 
+import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProperties.API_BOOT_OAUTH_PREFIX;
+
+import java.util.List;
+
 import org.minbox.framework.oauth.AuthorizationServerConfiguration;
 import org.minbox.framework.oauth.grant.OAuth2TokenGranter;
 import org.slf4j.Logger;
@@ -25,16 +29,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
-
-import java.util.List;
-
-import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProperties.API_BOOT_OAUTH_PREFIX;
 
 
 /**
@@ -42,18 +41,16 @@ import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProp
  *
  * @author 恒宇少年
  */
-@Configuration
 @ConditionalOnClass(AuthorizationServerConfiguration.class)
 @EnableConfigurationProperties(ApiBootOauthProperties.class)
-@EnableAuthorizationServer
 @ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "away", havingValue = "memory", matchIfMissing = true)
-public class ApiBootAuthorizationMemoryServerAutoConfiguration extends ApiBootAuthorizationServerAutoConfiguration {
+public class ApiBootAuthorizationMemoryServerConfiguration extends ApiBootAuthorizationServerConfiguration {
     /**
      * logger instance
      */
-    static Logger logger = LoggerFactory.getLogger(ApiBootAuthorizationMemoryServerAutoConfiguration.class);
+    static Logger logger = LoggerFactory.getLogger(ApiBootAuthorizationMemoryServerConfiguration.class);
 
-    public ApiBootAuthorizationMemoryServerAutoConfiguration(ObjectProvider<List<OAuth2TokenGranter>> objectProvider, ApiBootOauthProperties apiBootOauthProperties) {
+    public ApiBootAuthorizationMemoryServerConfiguration(ObjectProvider<List<OAuth2TokenGranter>> objectProvider, ApiBootOauthProperties apiBootOauthProperties) {
         super(objectProvider, apiBootOauthProperties);
         logger.info("ApiBoot Oauth2 initialize using memory.");
     }
@@ -64,6 +61,7 @@ public class ApiBootAuthorizationMemoryServerAutoConfiguration extends ApiBootAu
      * @param clients client details service configuration
      * @throws Exception exception
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         InMemoryClientDetailsServiceBuilder inMemoryClientDetailsServiceBuilder = clients.inMemory();
@@ -82,6 +80,7 @@ public class ApiBootAuthorizationMemoryServerAutoConfiguration extends ApiBootAu
      * @return TokenStore
      */
     @Bean
+    @Primary
     public TokenStore memoryTokenStore() {
         return new InMemoryTokenStore();
     }

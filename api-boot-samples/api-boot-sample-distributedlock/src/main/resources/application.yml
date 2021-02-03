@@ -3,6 +3,8 @@ spring:
     name: api-boot-sample-logging
   profiles:
     active: discovery-nacos
+  main:
+    allow-bean-definition-overriding: true
 server:
   port: 8080
 
@@ -11,6 +13,26 @@ api:
     logging:
       format-console-log-json: true
       show-console-log: true
+    swagger:
+      # 默认开启swagger文档
+      enable: true
+      # 扫描Controller的base package
+      base-package: com
+      title: 恒宇少年ApiBoot快速集成Swagger
+      description: 超级快速整合swagger实现文档生成
+      contact:
+        website: https://github.com/hengboy/api-boot
+    security:
+      users:
+        - username: hengboy
+          password: 123456
+    oauth:
+      enable-resource-server: true
+      jwt:
+        # 开启Jwt转换AccessToken
+        enable: true
+        # 转换Jwt时所需加密key，默认为ApiBoot
+        sign-key: 123456
 logging:
   level:
     org.minbox.framework.logging: debug

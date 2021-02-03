@@ -32,10 +32,5 @@
             <artifactId>reflections</artifactId>
             <optional>true</optional>
         </dependency>
-        
-        <dependency>
-			<groupId>cn.hutool</groupId>
-			<artifactId>hutool-all</artifactId>
-		</dependency>
     </dependencies>
 </project>
