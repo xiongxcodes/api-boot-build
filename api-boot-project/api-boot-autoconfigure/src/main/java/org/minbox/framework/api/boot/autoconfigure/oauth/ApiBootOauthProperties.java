@@ -40,14 +40,6 @@ public class ApiBootOauthProperties {
      */
     public static final String API_BOOT_OAUTH_PREFIX = "api.boot.oauth";
     /**
-     * enableAuthorizationServer 
-     */
-    private boolean enableAuthorizationServer = false;
-    /**
-     * enableResourceServer
-     */
-    private boolean enableResourceServer = false;
-    /**
      * Configure oauth authentication information storage mode
      * <p>
      * The default use {@link OAuthAway#memory}

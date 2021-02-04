@@ -17,7 +17,11 @@
 package org.minbox.framework.api.boot.autoconfigure.oauth;
 import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProperties.API_BOOT_OAUTH_PREFIX;
 
+import org.minbox.framework.api.boot.autoconfigure.security.ApiBootSecurityProperties;
+import org.minbox.framework.oauth.AuthorizationServerConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -29,7 +33,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  */
 @SuppressWarnings("deprecation")
 @Configuration
-@ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "enable-authorization-server", havingValue = "true")
+@ConditionalOnClass(AuthorizationServerConfiguration.class)
+@EnableConfigurationProperties({ApiBootSecurityProperties.class, ApiBootOauthProperties.class})
+@ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "enable-authorization", havingValue = "true", matchIfMissing = true)
 @EnableAuthorizationServer
 @Import({ApiBootAuthorizationMemoryServerConfiguration.class,ApiBootAuthorizationServerJdbcConfiguration.class,ApiBootAuthorizationServerRedisConfiguration.class})
 public class ApiBootAuthorizationServerAutoConfiguration {

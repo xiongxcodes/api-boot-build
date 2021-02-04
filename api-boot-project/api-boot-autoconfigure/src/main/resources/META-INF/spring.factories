@@ -1,7 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.minbox.framework.api.boot.autoconfigure.security.ApiBootWebSecurityMemoryAutoConfiguration,\
-  org.minbox.framework.api.boot.autoconfigure.security.ApiBootWebSecurityJdbcAutoConfiguration,\
+  org.minbox.framework.api.boot.autoconfigure.security.ApiBootWebSecurityAutoConfiguration,\
   org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootResourceServerAutoConfiguration,\
   org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootAuthorizationServerAutoConfiguration,\
   org.minbox.framework.api.boot.autoconfigure.converter.HttpMessageConverterAutoConfiguration,\

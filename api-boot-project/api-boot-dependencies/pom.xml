@@ -17,6 +17,7 @@
 		<haohope-bom.version>1.0.3</haohope-bom.version>
 		<spring.boot.version>2.3.6.RELEASE</spring.boot.version><!-- 2.2.1.RELEASE  2.3.6.RELEASE-->
 		<spring-cloud.version>2.2.6.RELEASE</spring-cloud.version>
+		<codecentric.version>2.3.0</codecentric.version>
 		<maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
 		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
 		<build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
@@ -28,6 +29,20 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
 				<version>${spring.boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Hoxton.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>2.2.0.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -163,6 +178,23 @@
 				<artifactId>api-boot-starter-ssh-agent</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-starter-server</artifactId>
+				<version>${codecentric.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-server-ui</artifactId>
+				<version>${codecentric.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-starter-client</artifactId>
+				<version>${codecentric.version}</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>com.github.xiongxcodes</groupId>
 				<artifactId>api-boot-starter-distributedlock</artifactId>

@@ -50,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @SuppressWarnings("deprecation")
 @Slf4j
 @Configuration
-@ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "enable-resource-server", havingValue = "true")
+@ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "enable-resource", havingValue = "true")
 @ConditionalOnClass({ResourceServerConfigurerAdapter.class, SecurityUser.class})
 @EnableConfigurationProperties({ApiBootSecurityProperties.class, ApiBootOauthProperties.class})
 @EnableResourceServer

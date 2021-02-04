@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>api-boot-starters</artifactId>
-        <groupId>com.github.xiongxcodes</groupId>
-        <version>${revision}</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>api-boot-starter-security-oauth-jwt</artifactId>
-    <properties>
-        <main.basedir>${basedir}/../../..</main.basedir>
-    </properties>
-    <scm>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>api-boot-starters</artifactId>
+		<groupId>com.github.xiongxcodes</groupId>
+		<version>${revision}</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>api-boot-starter-security-oauth-jwt</artifactId>
+	<properties>
+		<main.basedir>${basedir}/../../..</main.basedir>
+	</properties>
+	<scm>
 		<connection>scm:git:https://github.com/xiongxcodes/api-boot-build.git</connection>
 		<developerConnection>scm:git:https://github.com/xiongxcodes/api-boot-build.git</developerConnection>
 		<url>https://github.com/xiongxcodes/api-boot-build</url>
@@ -28,30 +28,46 @@
 			<organizationUrl>https://github.com/xiongxcodes</organizationUrl>
 		</developer>
 	</developers>
-    <dependencies>
-        <dependency>
-            <groupId>com.github.xiongxcodes</groupId>
-            <artifactId>api-boot-starter</artifactId>
-        </dependency>
-        <!--security oauth2-->
-        <dependency>
-            <groupId>org.springframework.security.oauth</groupId>
-            <artifactId>spring-security-oauth2</artifactId>
-        </dependency>
-        <!--jwt-->
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-jwt</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
+	<dependencies>
+		<dependency>
+			<groupId>com.github.xiongxcodes</groupId>
+			<artifactId>api-boot-starter</artifactId>
+		</dependency>
+		<!--security oauth2 -->
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+		</dependency>
+		<!--jwt -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-server</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.github.xiongxcodes</groupId>
 			<artifactId>haohope-security</artifactId>
 		</dependency>
@@ -59,6 +75,5 @@
 			<groupId>com.github.xiongxcodes</groupId>
 			<artifactId>haohope-oauth</artifactId>
 		</dependency>
-    </dependencies>
-
+	</dependencies>
 </project>

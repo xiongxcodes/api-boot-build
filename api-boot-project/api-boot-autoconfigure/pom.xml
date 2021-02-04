@@ -147,7 +147,7 @@
 			<artifactId>minbox-sequence</artifactId>
 			<optional>true</optional>
 		</dependency>
-        <dependency>
+		<dependency>
 			<groupId>com.github.xiongxcodes</groupId>
 			<artifactId>haohope-security</artifactId>
 			<optional>true</optional>
@@ -162,7 +162,7 @@
 			<artifactId>minbox-oss</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.minbox.framework</groupId>
 			<artifactId>message-pipe-server</artifactId>
@@ -271,6 +271,18 @@
 			<artifactId>guava</artifactId>
 			<optional>true</optional>
 		</dependency>
+
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-server</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server-ui</artifactId>
+			<optional>true</optional>
+		</dependency>
+
 		<dependency>
 			<groupId>org.redisson</groupId>
 			<artifactId>redisson-spring-boot-starter</artifactId>

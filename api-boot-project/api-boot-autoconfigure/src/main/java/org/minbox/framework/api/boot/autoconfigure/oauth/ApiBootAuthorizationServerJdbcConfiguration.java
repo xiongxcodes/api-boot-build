@@ -22,17 +22,14 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.minbox.framework.oauth.AuthorizationServerConfiguration;
 import org.minbox.framework.oauth.grant.OAuth2TokenGranter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -45,9 +42,7 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
  * @author 恒宇少年
  */
 @SuppressWarnings("deprecation")
-@EnableConfigurationProperties(ApiBootOauthProperties.class)
 @ConditionalOnBean(DataSource.class)
-@ConditionalOnClass(AuthorizationServerConfiguration.class)
 @ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "away", havingValue = "jdbc")
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
 public class ApiBootAuthorizationServerJdbcConfiguration extends ApiBootAuthorizationServerConfiguration {

@@ -21,17 +21,11 @@ import static org.minbox.framework.api.boot.autoconfigure.security.ApiBootSecuri
 import java.util.List;
 
 import org.minbox.framework.security.SecurityUser;
-import org.minbox.framework.security.WebSecurityConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -39,25 +33,22 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import de.codecentric.boot.admin.server.config.AdminServerProperties;
+
 /**
  * Automatic configuration to authenticate users using memory
  *
  * @author 恒宇少年
  */
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableConfigurationProperties(ApiBootSecurityProperties.class)
-@ConditionalOnClass(WebSecurityConfiguration.class)
 @ConditionalOnProperty(prefix = API_BOOT_SECURITY_PREFIX, name = "away", havingValue = "memory", matchIfMissing = true)
-public class ApiBootWebSecurityMemoryAutoConfiguration extends ApiBootWebSecurityAutoConfiguration {
+public class ApiBootWebSecurityMemoryConfiguration extends ApiBootWebSecurityConfiguration {
     /**
      * logger instance
      */
-    static Logger logger = LoggerFactory.getLogger(ApiBootWebSecurityMemoryAutoConfiguration.class);
+    static Logger logger = LoggerFactory.getLogger(ApiBootWebSecurityMemoryConfiguration.class);
 
-    public ApiBootWebSecurityMemoryAutoConfiguration(ApiBootSecurityProperties apiBootSecurityProperties, ObjectProvider<AccessDeniedHandler> accessDeniedHandler, ObjectProvider<AuthenticationEntryPoint> authenticationEntryPoint) {
-        super(apiBootSecurityProperties, accessDeniedHandler.getIfAvailable(), authenticationEntryPoint.getIfAvailable());
+    public ApiBootWebSecurityMemoryConfiguration(ApiBootSecurityProperties apiBootSecurityProperties, AdminServerProperties adminServerProperties,ObjectProvider<AccessDeniedHandler> accessDeniedHandler, ObjectProvider<AuthenticationEntryPoint> authenticationEntryPoint) {
+        super(apiBootSecurityProperties, adminServerProperties,accessDeniedHandler.getIfAvailable(), authenticationEntryPoint.getIfAvailable());
         logger.info("ApiBoot Security initialize using memory.");
     }
 
@@ -67,7 +58,7 @@ public class ApiBootWebSecurityMemoryAutoConfiguration extends ApiBootWebSecurit
         InMemoryUserDetailsManager memoryUserDetailsManager = new InMemoryUserDetailsManager();
         List<SecurityUser> users = apiBootSecurityProperties.getUsers();
         users.forEach(securityUser -> {
-            String encoderPassword = passwordEncoder().encode(securityUser.getPassword());
+            String encoderPassword = securityPasswordEncoder().encode(securityUser.getPassword());
             UserDetails userDetails =
                 User.builder()
                     .username(securityUser.getUsername())

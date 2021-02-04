@@ -20,14 +20,11 @@ import static org.minbox.framework.api.boot.autoconfigure.oauth.ApiBootOauthProp
 
 import java.util.List;
 
-import org.minbox.framework.oauth.AuthorizationServerConfiguration;
 import org.minbox.framework.oauth.grant.OAuth2TokenGranter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
@@ -41,8 +38,6 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
  *
  * @author 恒宇少年
  */
-@ConditionalOnClass(AuthorizationServerConfiguration.class)
-@EnableConfigurationProperties(ApiBootOauthProperties.class)
 @ConditionalOnProperty(prefix = API_BOOT_OAUTH_PREFIX, name = "away", havingValue = "memory", matchIfMissing = true)
 public class ApiBootAuthorizationMemoryServerConfiguration extends ApiBootAuthorizationServerConfiguration {
     /**
@@ -66,7 +61,7 @@ public class ApiBootAuthorizationMemoryServerConfiguration extends ApiBootAuthor
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         InMemoryClientDetailsServiceBuilder inMemoryClientDetailsServiceBuilder = clients.inMemory();
         apiBootOauthProperties.getClients().stream().forEach(client -> inMemoryClientDetailsServiceBuilder.withClient(client.getClientId())
-            .secret(passwordEncoder().encode(client.getClientSecret()))
+            .secret(oauthPasswordEncoder().encode(client.getClientSecret()))
             .authorizedGrantTypes(client.getGrantTypes())
             .scopes(client.getScopes())
             .resourceIds(client.getResourceId())
