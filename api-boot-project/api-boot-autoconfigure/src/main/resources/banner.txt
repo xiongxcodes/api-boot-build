@@ -10,7 +10,3 @@
 SpringBoot Version : ${spring-boot.formatted-version}
 
 Version : ${api.boot.version}
-
-WebSite : https://apiboot.minbox.org
-
-Study Articles : https://blog.yuqiyu.com/apiboot-all-articles.html

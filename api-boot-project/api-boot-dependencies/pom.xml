@@ -15,8 +15,10 @@
 	<properties>
 		<main.basedir>${basedir}/../..</main.basedir>
 		<haohope-bom.version>1.0.3</haohope-bom.version>
-		<spring.boot.version>2.3.6.RELEASE</spring.boot.version><!-- 2.2.1.RELEASE  2.3.6.RELEASE-->
-		<spring-cloud.version>2.2.6.RELEASE</spring-cloud.version>
+		<spring.boot.version>2.3.6.RELEASE</spring.boot.version>
+		<spring-cloud-dependencies.version>Hoxton.RELEASE</spring-cloud-dependencies.version>
+		<spring-cloud-openfeign-dependencies.version>2.2.0.RELEASE</spring-cloud-openfeign-dependencies.version>
+		<spring-cloud-alibaba-dependencies.version>2.2.0.RELEASE</spring-cloud-alibaba-dependencies.version>
 		<codecentric.version>2.3.0</codecentric.version>
 		<maven-plugin-plugin.version>3.6.0</maven-plugin-plugin.version>
 		<maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
@@ -35,16 +37,28 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Hoxton.RELEASE</version>
+				<version>${spring-cloud-dependencies.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba.cloud</groupId>
 				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
-				<version>2.2.5.RELEASE</version>
+				<version>${spring-cloud-alibaba-dependencies.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-openfeign-dependencies</artifactId>
+				<version>${spring-cloud-openfeign-dependencies.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-gateway</artifactId>
+				<version>2.2.1.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.xiongxcodes</groupId>
@@ -178,7 +192,7 @@
 				<artifactId>api-boot-starter-ssh-agent</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>de.codecentric</groupId>
 				<artifactId>spring-boot-admin-starter-server</artifactId>
@@ -194,7 +208,7 @@
 				<artifactId>spring-boot-admin-starter-client</artifactId>
 				<version>${codecentric.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.github.xiongxcodes</groupId>
 				<artifactId>api-boot-starter-distributedlock</artifactId>
@@ -204,6 +218,12 @@
 			<dependency>
 				<groupId>com.github.xiongxcodes</groupId>
 				<artifactId>api-boot-starter-globalexception</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.github.xiongxcodes</groupId>
+				<artifactId>api-boot-starter-gateway</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

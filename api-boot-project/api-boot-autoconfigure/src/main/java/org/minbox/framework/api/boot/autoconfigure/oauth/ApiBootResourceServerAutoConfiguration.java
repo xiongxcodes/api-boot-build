@@ -28,6 +28,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -39,6 +40,9 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,6 +59,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableConfigurationProperties({ApiBootSecurityProperties.class, ApiBootOauthProperties.class})
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@Import({ApiBootResourceFeignConfiguration.class})
 public class ApiBootResourceServerAutoConfiguration extends ResourceServerConfigurerAdapter {
     //private static final String CONTENT_TYPE = "application/json;charset=UTF-8";
     private ApiBootSecurityProperties apiBootSecurityProperties;
@@ -88,11 +93,30 @@ public class ApiBootResourceServerAutoConfiguration extends ResourceServerConfig
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+            .antMatchers( "/actuator/**","/instances/**").permitAll()
             .anyRequest()
             .authenticated()
             .and()
             .requestMatchers()
-            .antMatchers(apiBootSecurityProperties.getAuthPrefix());
+            .antMatchers(apiBootSecurityProperties.getAuthPrefix())
+            //跨域
+            .and()
+            .cors()
+            .and()
+            .csrf()
+            .disable();
+    }
+    
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(urlBasedCorsConfigurationSource);
     }
     protected AccessDeniedHandler getAccessDeniedHandler() {
         return ObjectUtils.isEmpty(this.accessDeniedHandler) ? new DefaultSecurityAccessDeniedHandler()

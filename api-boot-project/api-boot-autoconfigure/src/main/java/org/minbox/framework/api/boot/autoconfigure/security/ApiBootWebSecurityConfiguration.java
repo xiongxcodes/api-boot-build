@@ -20,12 +20,16 @@ import java.util.List;
 import org.minbox.framework.security.WebSecurityConfiguration;
 import org.minbox.framework.security.handler.DefaultSecurityAccessDeniedHandler;
 import org.minbox.framework.security.point.DefaultSecurityAuthenticationEntryPoint;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import de.codecentric.boot.admin.server.config.AdminServerProperties;
 
@@ -69,6 +73,21 @@ public class ApiBootWebSecurityConfiguration extends WebSecurityConfiguration {
         return ignoringUrls;
     }
     /**
+     * 跨域
+     * @return
+     */
+    @Bean
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
+        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
+        return new CorsFilter(urlBasedCorsConfigurationSource);
+    }
+    /**
      * Disable basic http
      *
      * @param http {@link HttpSecurity}
@@ -109,24 +128,35 @@ public class ApiBootWebSecurityConfiguration extends WebSecurityConfiguration {
         //if (disableCsrf()) {
         //    http.csrf().disable();
         //}
+        
+        
+        
         String adminContextPath = adminServerProperties.getContextPath();
         SavedRequestAwareAuthenticationSuccessHandler successHandler =
             new SavedRequestAwareAuthenticationSuccessHandler();
         successHandler.setTargetUrlParameter("redirectTo");
         successHandler.setDefaultTargetUrl(adminContextPath + "/");
-        //super.configure(http);
         http.authorizeRequests()
         // 静态文件允许访问
         .antMatchers(adminContextPath + "/assets/**").permitAll()
         // 登录页面允许访问
-        .antMatchers(adminContextPath + "/login", "/actuator/**", "/css/**", "/js/**", "/image/*").permitAll()
+        .antMatchers(adminContextPath + "/login", adminContextPath + "/actuator/**",adminContextPath + "/instances/**", "/css/**", "/js/**", "/image/*").permitAll()
         // 其他所有请求需要登录
         .anyRequest().authenticated().and()
         // 登录页面配置，用于替换security默认页面
         .formLogin().loginPage(adminContextPath + "/login").successHandler(successHandler).and()
         // 登出页面配置，用于替换security默认页面
-        .logout().logoutUrl(adminContextPath + "/logout").and().httpBasic().and().csrf()
-        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        .logout().logoutUrl(adminContextPath + "/logout")
+        .and().httpBasic()
+      //跨域
+        .and()
+        .cors()
+        .and()
+        .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+        .disable();
+        //.and().csrf()
+        //.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+        //super.configure(http);
     }
 
     @Override

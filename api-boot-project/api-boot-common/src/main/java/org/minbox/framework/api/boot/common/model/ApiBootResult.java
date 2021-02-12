@@ -39,7 +39,15 @@ public class ApiBootResult<T> implements Serializable {
     private String errorMessage;
     
     private boolean success;
-    
+    public ApiBootResult() {
+        
+    }
+    public ApiBootResult(T data,String errorCode,String errorMessage,boolean success) {
+        this.data = data;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+        this.success = success;
+    }
     public static ApiBootResult<Void> ok() {
         return new ApiBootResult<Void>(null, "0", "ok",true);
     }
@@ -61,29 +69,34 @@ public class ApiBootResult<T> implements Serializable {
     public static <T> ApiBootResult<T> fail(T data,String errorCode,String errorMessage) {
         return new ApiBootResult<T>(data, errorMessage, errorMessage,false);
     }
-    public static ApiBootResult<Throwable> fail(String errorMessage,ApiBootException cause) {
-        return new ApiBootResult<Throwable>(cause, cause.getErrorCode(), errorMessage,false);
+    public static ApiBootResult<StackTraceElement> fail(String errorMessage,ApiBootException cause) {
+        return new ApiBootResult<StackTraceElement>(getStackTraceElement(cause), cause.getErrorCode(), errorMessage,false);
     }
-    public static ApiBootResult<Throwable> fail(ApiBootException cause) {
+    public static ApiBootResult<StackTraceElement> fail(ApiBootException cause) {
         return fail(cause.getMessage(),cause);
     }
-    public static ApiBootResult<Throwable> fail(String errorCode,String errorMessage,Throwable cause) {
+    public static ApiBootResult<StackTraceElement> fail(String errorCode,String errorMessage,Throwable cause) {
         if(cause instanceof ApiBootException) {
             return  fail(errorMessage,(ApiBootException)cause);
         }
-        return new ApiBootResult<Throwable>(cause, errorCode, errorMessage,false);
+        return new ApiBootResult<StackTraceElement>(getStackTraceElement(cause), errorCode, errorMessage,false);
     }
-    public static ApiBootResult<Throwable> fail(String errorCode,Throwable cause) {
+    public static ApiBootResult<StackTraceElement> fail(String errorCode,Throwable cause) {
         if(cause instanceof ApiBootException) {
             return  fail((ApiBootException)cause);
         }
         return fail(errorCode,cause.getMessage(),cause);
     }
-    public static ApiBootResult<Throwable> fail(Throwable cause) {
+    public static ApiBootResult<StackTraceElement> fail(Throwable cause) {
         if(cause instanceof ApiBootException) {
             return  fail((ApiBootException)cause);
         }
         return fail("-1",cause.getMessage(),cause);
     }
-    
+    public static StackTraceElement getStackTraceElement(Throwable cause) {
+        if(null != cause.getCause()) {
+            cause = cause.getCause();
+        }
+        return null==cause.getStackTrace()||0==cause.getStackTrace().length?null:cause.getStackTrace()[0];
+    }
 }

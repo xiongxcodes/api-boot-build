@@ -1,5 +1,11 @@
 package org.minbox.framework.api.boot.autoconfigure.swagger;
 
+import static org.minbox.framework.api.boot.autoconfigure.swagger.SwaggerProperties.API_BOOT_SWAGGER_PREFIX;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -9,11 +15,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
+
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.*;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -21,12 +32,6 @@ import springfox.documentation.swagger.configuration.SwaggerCommonConfiguration;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 import springfox.documentation.swagger2.web.Swagger2Controller;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.minbox.framework.api.boot.autoconfigure.swagger.SwaggerProperties.API_BOOT_SWAGGER_PREFIX;
 
 /**
  * Swagger2 automation configuration

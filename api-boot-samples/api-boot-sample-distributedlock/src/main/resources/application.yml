@@ -23,11 +23,12 @@ api:
       contact:
         website: https://github.com/hengboy/api-boot
     security:
+      enable: true
       users:
         - username: hengboy
           password: 123456
     oauth:
-      enable-resource-server: true
+      enable-resource: true
       jwt:
         # 开启Jwt转换AccessToken
         enable: true
